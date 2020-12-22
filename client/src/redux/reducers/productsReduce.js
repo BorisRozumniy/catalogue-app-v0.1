@@ -3,9 +3,10 @@ import * as types from "../constants";
 import createReducer from "../createReducer";
 
 const initialState = {
-	productsData: {},
+	productsData: [],
 	productsRequestError: {},
 	productsRequestLoading: false,
+	editingProduct: {},
 };
 
 const productsReducer = createReducer(initialState)({
@@ -23,6 +24,10 @@ const productsReducer = createReducer(initialState)({
 		...state,
 		productsRequestError: payload,
 		productsRequestLoading: false,
+	}),
+	[types.SET_EDITING_PRODUCT]: (state, { payload }) => ({
+		...state,
+		editingProduct: payload,
 	}),
 });
 

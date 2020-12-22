@@ -47,6 +47,11 @@ const putProductError = payload => ({
     payload,
 });
 
+export const actionSetEditingProduct = payload => ({
+    type: types.SET_EDITING_PRODUCT,
+    payload,
+});
+
 export const actionGetProducts = (headers) => dispatch => {
     dispatch(getProductsStart());
     const config = {

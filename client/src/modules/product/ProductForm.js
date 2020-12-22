@@ -1,19 +1,36 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { connect } from "react-redux";
 import { Col, Button, Form, FormGroup, Label, Input, FormText, Container } from 'reactstrap';
 import backendApiUrls from "../../routes/backendUrls";
 import { useHttp } from "../../hooks/http.hook";
 import { AuthContext } from '../../context/AuthContext';
+import { actionSetEditingProduct, actionPutProduct } from '../../redux/actions/products';
 
-const AddProduct = () => {
+const ProductForm = ({
+  editingProduct,
+  toggleModal,
+  actionPutProduct,
+}) => {
+  const {
+    title,
+    img,
+    description,
+    price,
+    numberDaysUntilEndDiscount,
+  } = editingProduct
   const auth = useContext(AuthContext)
   const { request } = useHttp()
   const [form, setForm] = useState({
-    title: '',
-    img: '',
-    description: '',
-    price: null,
-    numberDaysUntilEndDiscount: null,
+    title,
+    img,
+    description,
+    price,
+    numberDaysUntilEndDiscount,
   });
+
+  useEffect(() => {
+    title && setForm(editingProduct)
+  }, [editingProduct])
 
   const changeHandler = event => {
     setForm({ ...form, [event.target.name]: event.target.value })
@@ -21,12 +38,20 @@ const AddProduct = () => {
   
   const submitHandler = async e => {
     e.preventDefault()
-    try {
-      await request(backendApiUrls.generate, 'POST', {...form}, {
+    actionSetEditingProduct({})
+    toggleModal()
+    if (editingProduct._id) {
+      actionPutProduct(form, {
         Authorization: `Bearer ${auth.token}`
       })
-    } catch (e) {
-      console.log('---', e)
+    } else {
+      try {
+        await request(backendApiUrls.generate, 'POST', {...form}, {
+          Authorization: `Bearer ${auth.token}`
+        })
+      } catch (e) {
+        console.log('---', e)
+      }
     }
   };
   
@@ -41,6 +66,7 @@ const AddProduct = () => {
               type="title"
               name="title"
               id="title"
+              value={form.title}
               placeholder="with a placeholder"
               onChange={changeHandler}
             />
@@ -54,6 +80,7 @@ const AddProduct = () => {
               type="file"
               name="img"
               id="img"
+              value={form.img}
               onChange={changeHandler}
               invalid
             />
@@ -69,6 +96,7 @@ const AddProduct = () => {
               type="textarea"
               name="description"
               id="description"
+              value={form.description}
               onChange={changeHandler}
             />
             <FormText color="muted">
@@ -83,6 +111,7 @@ const AddProduct = () => {
               type="number"
               name="price"
               id="price"
+              value={form.price}
               onChange={changeHandler}
               invalid
             />
@@ -98,6 +127,7 @@ const AddProduct = () => {
               type="number"
               name="numberDaysUntilEndDiscount"
               id="numberDaysUntilEndDiscount"
+              value={form.numberDaysUntilEndDiscount}
               onChange={changeHandler}
               invalid
             />
@@ -116,4 +146,11 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+const mapStateToProps = (state) => ({
+  editingProduct: state.productsReducer.editingProduct,
+});
+
+export default connect(
+  mapStateToProps,
+  { actionSetEditingProduct, actionPutProduct }
+)(ProductForm);

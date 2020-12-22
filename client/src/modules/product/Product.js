@@ -1,26 +1,30 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { connect } from "react-redux";
 import { AuthContext } from '../../context/AuthContext';
 import { Col, Jumbotron, Button, Badge } from "reactstrap";
-import { actionDeleteProduct, actionPutProduct } from '../../redux/actions/products';
+import { actionDeleteProduct, actionPutProduct, actionSetEditingProduct } from '../../redux/actions/products';
 
 const Product = ({
-  _id,
-  img,
-  title,
-  description,
-  price,
-  numberDaysUntilEndDiscount,
+  product,
+  actionSetEditingProduct,
   actionDeleteProduct,
-  actionPutProduct,
 }) => {
+  const {
+    _id,
+    img,
+    title,
+    description,
+    price,
+    numberDaysUntilEndDiscount,
+  } = product;
   const auth = useContext(AuthContext)
 
   const deleteHandler = () => {
     actionDeleteProduct(_id, {Authorization: `Bearer ${auth.token}`})
   }
-  const editHandler = () => {
-    actionPutProduct(_id, {Authorization: `Bearer ${auth.token}`})
+  
+  const editProductHandler = () => {
+    actionSetEditingProduct(product)
   }
 
   const discountText = <>
@@ -37,12 +41,12 @@ const Product = ({
           <Badge pill color="info" className="p-3 m-2">{price}$</Badge>
           {numberDaysUntilEndDiscount > 0 &&
             <h3 className="text-uppercase">{discountText}</h3>}
+          <Button type="button" color="warning" block size="lg"
+            onClick={editProductHandler} className="text-uppercase"
+          >edit</Button>
           <Button type="button" color="danger" block size="lg"
             onClick={deleteHandler} className="text-uppercase"
           >remove</Button>
-          <Button type="button" color="warning" block size="lg"
-            onClick={editHandler} className="text-uppercase"
-          >edit</Button>
         </Jumbotron>
       </Col>
     );
@@ -50,11 +54,11 @@ const Product = ({
   
 
   const mapStateToProps = (state) => ({
-    products: state.productsReducer.productsData,
+    editingProduct: state.productsReducer.editingProduct,
   });
   
   export default connect(
     mapStateToProps,
-    { actionDeleteProduct, actionPutProduct }
+    { actionDeleteProduct, actionPutProduct, actionSetEditingProduct }
   )(Product);
   

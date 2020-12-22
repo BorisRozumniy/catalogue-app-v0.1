@@ -35,24 +35,6 @@ const Header = ({email, logout}) => (
                         registration
                     </NavLink>
                 </NavItem>
-                <NavItem className="mr-2 my-4 my-lg-2">
-                    <NavLink
-                        to={frontendUrls.editProduct}
-                        activeClassName="bg-warning"
-                        className="p-3"
-                    >
-                        edit Product
-                    </NavLink>
-                </NavItem>
-                <NavItem className="mr-2 my-4 my-lg-2">
-                    <NavLink
-                        to={frontendUrls.addProduct}
-                        activeClassName="bg-warning"
-                        className="p-3"
-                    >
-                        add new Product
-                    </NavLink>
-                </NavItem>
                 <div className="mr-2 my-4 my-lg-2">
                     {email && email}
                     <button
