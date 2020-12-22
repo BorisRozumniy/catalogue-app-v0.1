@@ -67,4 +67,16 @@ router.delete('/:id', auth, async (req, res) => {
   }
 })
 
+router.put('/:id', auth, async (req, res) => {
+  try {
+    const editedProduct = await Product.findById(req.params.id)
+    res.json({
+      message: `Продукт ${editedProduct.title} успешно изменен`,
+      editedProduct
+    })
+  } catch (e) {
+    res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова'})
+  }
+})
+
 module.exports = router

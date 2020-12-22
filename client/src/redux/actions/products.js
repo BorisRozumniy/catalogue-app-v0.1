@@ -32,6 +32,21 @@ const deleteProductError = payload => ({
     payload,
 });
 
+const putProductStart = payload => ({
+    type: types.PUT_REQUEST_PRODUCTS_START,
+    payload,
+});
+
+const putProductSuccess = payload => ({
+    type: types.PUT_REQUEST_PRODUCTS_SUCCESS,
+    payload,
+});
+
+const putProductError = payload => ({
+    type: types.PUT_REQUEST_PRODUCTS_ERROR,
+    payload,
+});
+
 export const actionGetProducts = (headers) => dispatch => {
     dispatch(getProductsStart());
     const config = {
@@ -68,5 +83,24 @@ export const actionDeleteProduct = (id, headers) => dispatch => {
 
         .catch((error) => {
             dispatch(deleteProductError(error));
+        });
+};
+
+export const actionPutProduct = (id, headers) => dispatch => {
+    dispatch(putProductStart());
+    const config = {
+        headers,
+        method: "PUT",
+        url: `${backendApiUrls.products}${id}`,
+    };
+
+    axios(config)
+        .then(response => {
+            const { data } = response;
+            dispatch(putProductSuccess(data));
+        })
+
+        .catch((error) => {
+            dispatch(putProductError(error));
         });
 };

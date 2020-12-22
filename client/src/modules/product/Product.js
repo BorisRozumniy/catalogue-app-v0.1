@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import { connect } from "react-redux";
 import { AuthContext } from '../../context/AuthContext';
 import { Col, Jumbotron, Button, Badge } from "reactstrap";
-import { actionDeleteProduct } from '../../redux/actions/products';
+import { actionDeleteProduct, actionPutProduct } from '../../redux/actions/products';
 
 const Product = ({
   _id,
@@ -12,6 +12,7 @@ const Product = ({
   price,
   numberDaysUntilEndDiscount,
   actionDeleteProduct,
+  actionPutProduct,
 }) => {
   const auth = useContext(AuthContext)
 
@@ -19,7 +20,7 @@ const Product = ({
     actionDeleteProduct(_id, {Authorization: `Bearer ${auth.token}`})
   }
   const editHandler = () => {
-    alert("edit")
+    actionPutProduct(_id, {Authorization: `Bearer ${auth.token}`})
   }
 
   const discountText = <>
@@ -54,6 +55,6 @@ const Product = ({
   
   export default connect(
     mapStateToProps,
-    { actionDeleteProduct }
+    { actionDeleteProduct, actionPutProduct }
   )(Product);
   
