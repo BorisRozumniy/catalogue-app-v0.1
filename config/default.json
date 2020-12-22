@@ -1,0 +1,6 @@
+{
+    "port": 5000,
+    "jwtSecret": "boris catalogue secret key",
+    "mongoUri": "mongodb+srv://boris:1234pas@cluster0.q9jg4.mongodb.net/catalogue-app?retryWrites=true&w=majority",
+    "baseUrl": "http://localhost:5000"
+}
