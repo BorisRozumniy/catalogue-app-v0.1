@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useEffect, useContext } from 'react';
+import { connect } from "react-redux";
+import { AuthContext } from '../../context/AuthContext';
 import { Col, Jumbotron, Button, Badge } from "reactstrap";
+import { actionDeleteProduct } from '../../redux/actions/products';
 
-const Product = ({ img, title, description, price, numberDaysUntilEndDiscount }) => {
+const Product = ({
+  _id,
+  img,
+  title,
+  description,
+  price,
+  numberDaysUntilEndDiscount,
+  actionDeleteProduct,
+}) => {
+  const auth = useContext(AuthContext)
+
+  const deleteHandler = () => {
+    actionDeleteProduct(_id, {Authorization: `Bearer ${auth.token}`})
+  }
+  const editHandler = () => {
+    alert("edit")
+  }
+
   const discountText = <>
       The discount will be valid for another {" "}
       <Badge color="success">{numberDaysUntilEndDiscount}</Badge> {" "}
@@ -17,15 +37,23 @@ const Product = ({ img, title, description, price, numberDaysUntilEndDiscount })
           {numberDaysUntilEndDiscount > 0 &&
             <h3 className="text-uppercase">{discountText}</h3>}
           <Button type="button" color="danger" block size="lg"
-            onClick={() => alert("remove")} className="text-uppercase"
+            onClick={deleteHandler} className="text-uppercase"
           >remove</Button>
           <Button type="button" color="warning" block size="lg"
-            onClick={() => alert("edit")} className="text-uppercase"
+            onClick={editHandler} className="text-uppercase"
           >edit</Button>
         </Jumbotron>
       </Col>
     );
   }
   
-  export default Product;
+
+  const mapStateToProps = (state) => ({
+    products: state.productsReducer.productsData,
+  });
+  
+  export default connect(
+    mapStateToProps,
+    { actionDeleteProduct }
+  )(Product);
   

@@ -17,6 +17,21 @@ const getProductsError = payload => ({
     payload,
 });
 
+const deleteProductStart = payload => ({
+    type: types.DELETE_REQUEST_PRODUCTS_START,
+    payload,
+});
+
+const deleteProductSuccess = payload => ({
+    type: types.DELETE_REQUEST_PRODUCTS_SUCCESS,
+    payload,
+});
+
+const deleteProductError = payload => ({
+    type: types.DELETE_REQUEST_PRODUCTS_ERROR,
+    payload,
+});
+
 export const actionGetProducts = (headers) => dispatch => {
     dispatch(getProductsStart());
     const config = {
@@ -33,5 +48,25 @@ export const actionGetProducts = (headers) => dispatch => {
 
         .catch((error) => {
             dispatch(getProductsError(error));
+        });
+};
+
+export const actionDeleteProduct = (id, headers) => dispatch => {
+    dispatch(deleteProductStart());
+    const config = {
+        headers,
+        // params: id,
+        method: "DELETE",
+        url: `${backendApiUrls.products}${id}`,
+    };
+
+    axios(config)
+        .then(response => {
+            const { data } = response;
+            dispatch(deleteProductSuccess(data));
+        })
+
+        .catch((error) => {
+            dispatch(deleteProductError(error));
         });
 };
