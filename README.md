@@ -1,13 +1,17 @@
 # catalogue-app-v0.1
 
-### install dependencies
+## install dependencies
 
 yarn
-__in new tab__
+
+_in new tab_
+
 cd client && yarn
 
-### run project
+## run project
 
 yarn server
-__in new tab__
+
+_in new tab_
+
 cd client && yarn start
