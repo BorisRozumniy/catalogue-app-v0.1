@@ -3,11 +3,11 @@
 ### install dependencies
 
 yarn
-_in new tab
+__in new tab__
 cd client && yarn
 
 ### run project
 
 yarn server
-_in new tab
+__in new tab__
 cd client && yarn start
