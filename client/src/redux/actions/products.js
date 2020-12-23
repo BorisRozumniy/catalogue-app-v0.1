@@ -91,12 +91,13 @@ export const actionDeleteProduct = (id, headers) => dispatch => {
         });
 };
 
-export const actionPutProduct = (id, headers) => dispatch => {
+export const actionPutProduct = (data, headers) => dispatch => {
     dispatch(putProductStart());
     const config = {
         headers,
-        method: "PUT",
-        url: `${backendApiUrls.products}${id}`,
+        method: "PATCH",
+        url: `${backendApiUrls.products}${data._id}`,
+        data,
     };
 
     axios(config)
