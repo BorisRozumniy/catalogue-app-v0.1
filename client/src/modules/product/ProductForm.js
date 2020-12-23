@@ -4,12 +4,12 @@ import { Col, Button, Form, FormGroup, Label, Input, FormText, Container } from 
 import backendApiUrls from "../../routes/backendUrls";
 import { useHttp } from "../../hooks/http.hook";
 import { AuthContext } from '../../context/AuthContext';
-import { actionSetEditingProduct, actionPutProduct } from '../../redux/actions/products';
+import { actionSetEditingProduct, actionPatchProduct } from '../../redux/actions/products';
 
 const ProductForm = ({
   editingProduct,
   toggleModal,
-  actionPutProduct,
+  actionPatchProduct,
 }) => {
   const {
     title,
@@ -41,7 +41,7 @@ const ProductForm = ({
     actionSetEditingProduct({})
     toggleModal()
     if (editingProduct._id) {
-      actionPutProduct(form, {
+      actionPatchProduct(form, {
         Authorization: `Bearer ${auth.token}`
       })
     } else {
@@ -152,5 +152,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { actionSetEditingProduct, actionPutProduct }
+  { actionSetEditingProduct, actionPatchProduct }
 )(ProductForm);

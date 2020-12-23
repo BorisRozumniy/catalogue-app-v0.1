@@ -41,9 +41,7 @@ const Catalogue = ({
     const auth = useContext(AuthContext)
     const isProductsExists = products.length > 0;
     useEffect(() => {
-        !isProductsExists && actionGetProducts({
-            Authorization: `Bearer ${auth.token}`
-        });
+        !isProductsExists && actionGetProducts();
         
     }, [isProductsExists]);
 

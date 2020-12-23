@@ -4,23 +4,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { useAuth } from './hooks/auth.hook';
 import { AuthContext } from "./context/AuthContext";
-import { useRoutes } from './routes/frontendRoutes';
-import Header from "./modules/header/Header";
+import Routes from './routes/frontendRoutes';
 
 const App = () => {
-  const { email, saveEmail, token, login, logout, userId } = useAuth();
-  const isAuthenticated = !!token;
-  const routes = useRoutes(isAuthenticated)
+  // const { email, saveEmail, token, login, logout, userId } = useAuth();
+  // const isAuthenticated = !!token;
 
   return (
-    <AuthContext.Provider value={{
-      email, token, login, logout, userId, isAuthenticated
-    }}>
+    // <AuthContext.Provider value={{
+    //   email, token, login, logout, userId, isAuthenticated
+    // }}>
       <BrowserRouter>
-        {isAuthenticated && <Header email={email} logout={logout} />}
-        {routes}
+        {/* {isAuthenticated && <Header />} */}
+        <Routes />
       </BrowserRouter>
-    </AuthContext.Provider>
+    // </AuthContext.Provider>
   );
 }
 

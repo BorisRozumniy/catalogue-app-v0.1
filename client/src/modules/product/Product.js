@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { connect } from "react-redux";
 import { AuthContext } from '../../context/AuthContext';
 import { Col, Jumbotron, Button, Badge } from "reactstrap";
-import { actionDeleteProduct, actionPutProduct, actionSetEditingProduct } from '../../redux/actions/products';
+import { actionDeleteProduct, actionPatchProduct, actionSetEditingProduct } from '../../redux/actions/products';
 
 const Product = ({
   product,
@@ -59,6 +59,6 @@ const Product = ({
   
   export default connect(
     mapStateToProps,
-    { actionDeleteProduct, actionPutProduct, actionSetEditingProduct }
+    { actionDeleteProduct, actionPatchProduct, actionSetEditingProduct }
   )(Product);
   

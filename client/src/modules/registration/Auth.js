@@ -1,14 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
+import { connect } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
 import { useHttp } from '../../hooks/http.hook';
 import { useMessage } from '../../hooks/message.hook';
-import { AuthContext } from '../../context/AuthContext';
-import { ToastContainer, toast } from 'react-toastify';
+import { actionPostLogin } from "../../redux/actions/auth";
 
 import backendApiUrls from "../../routes/backendUrls";
 import { Row, Col, Input, Label, Button } from "reactstrap";
 
-const Auth = () => {
-  const auth = useContext(AuthContext);
+const Auth = ({
+  actionPostLogin,
+}) => {
   const message = useMessage()
   const {loading, request, error, clearError} = useHttp();
   const [form, setForm] = useState({
@@ -28,21 +30,13 @@ const Auth = () => {
     try {
       const data = await request(backendApiUrls.register, 'POST', {...form})
       toast.success(data.message)
-      console.log('data from registerHandler', data)
     } catch (e) {
       console.log('---', e)
     }
   };
 
-  const loginHandler = async () => {
-    try {
-      const data = await request(backendApiUrls.login, 'POST', {...form})
-      auth.login(data.token, data.userId, form.email)
-      console.log('loginHandler', form.email, data, data.token, data.userId);
-      toast.success(`Добро пожаловать ${form.email}!!!`)
-    } catch (e) {
-      console.log('---', e)
-    }
+  const loginHandler = () => {
+    actionPostLogin(form)
   };
 
   return (
@@ -96,4 +90,8 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+
+export default connect(
+  null,
+  { actionPostLogin }
+)(Auth);

@@ -1,16 +1,19 @@
 import React from 'react'
+import { connect } from "react-redux";
 import {Switch, Route, Redirect} from 'react-router-dom'
 import { Container } from "reactstrap";
 import { frontendUrls } from "../routes/frontendUrls";
 import Auth from '../modules/registration/Auth'
 import Catalogue from "../modules/catalogue/Catalogue";
 import Registration from "../modules/registration/Auth";
+import Header from "../modules/header/Header";
 import EditProduct from "../modules/product/EditProduct";
 
-export const useRoutes = isAuthenticated => {
-  if (isAuthenticated) {
+const Routes = ({ email }) => {
+  if (email) {
     return (
       <Container>
+        <Header />
         <Switch>
           <Route path={frontendUrls.catalogue}>
             <Catalogue />
@@ -38,3 +41,12 @@ export const useRoutes = isAuthenticated => {
     </Switch>
   )
 }
+
+const mapStateToProps = (state) => ({
+  email: state.userReducer.email,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Routes);

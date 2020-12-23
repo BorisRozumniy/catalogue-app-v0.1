@@ -29,6 +29,10 @@ const productsReducer = createReducer(initialState)({
 		...state,
 		editingProduct: payload,
 	}),
+	[types.CLEAR_PRODUCTS]: (state) => ({
+		...state,
+		productsData: [],
+	}),
 });
 
 export default productsReducer;

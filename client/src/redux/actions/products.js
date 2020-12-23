@@ -1,6 +1,7 @@
 import axios from "axios";
 import backendApiUrls from "../../routes/backendUrls";
 import * as types from "../constants";
+const storageName = 'userData'
 
 const getProductsStart = payload => ({
     type: types.GET_REQUEST_PRODUCTS_START,
@@ -32,18 +33,18 @@ const deleteProductError = payload => ({
     payload,
 });
 
-const putProductStart = payload => ({
-    type: types.PUT_REQUEST_PRODUCTS_START,
+const patchProductStart = payload => ({
+    type: types.PATCH_REQUEST_PRODUCTS_START,
     payload,
 });
 
-const putProductSuccess = payload => ({
-    type: types.PUT_REQUEST_PRODUCTS_SUCCESS,
+const patchProductSuccess = payload => ({
+    type: types.PATCH_REQUEST_PRODUCTS_SUCCESS,
     payload,
 });
 
-const putProductError = payload => ({
-    type: types.PUT_REQUEST_PRODUCTS_ERROR,
+const patchProductError = payload => ({
+    type: types.PATCH_REQUEST_PRODUCTS_ERROR,
     payload,
 });
 
@@ -52,10 +53,15 @@ export const actionSetEditingProduct = payload => ({
     payload,
 });
 
-export const actionGetProducts = (headers) => dispatch => {
+export const actionClearProducts = () => ({
+    type: types.CLEAR_PRODUCTS,
+});
+
+export const actionGetProducts = () => dispatch => {
     dispatch(getProductsStart());
+    const userData = JSON.parse(localStorage.getItem(storageName))
     const config = {
-        headers,
+        headers: {Authorization: `Bearer ${userData.token}`},
         method: "GET",
         url: backendApiUrls.products,
     };
@@ -75,7 +81,6 @@ export const actionDeleteProduct = (id, headers) => dispatch => {
     dispatch(deleteProductStart());
     const config = {
         headers,
-        // params: id,
         method: "DELETE",
         url: `${backendApiUrls.products}${id}`,
     };
@@ -91,8 +96,8 @@ export const actionDeleteProduct = (id, headers) => dispatch => {
         });
 };
 
-export const actionPutProduct = (data, headers) => dispatch => {
-    dispatch(putProductStart());
+export const actionPatchProduct = (data, headers) => dispatch => {
+    dispatch(patchProductStart());
     const config = {
         headers,
         method: "PATCH",
@@ -103,10 +108,10 @@ export const actionPutProduct = (data, headers) => dispatch => {
     axios(config)
         .then(response => {
             const { data } = response;
-            dispatch(putProductSuccess(data));
+            dispatch(patchProductSuccess(data));
         })
 
         .catch((error) => {
-            dispatch(putProductError(error));
+            dispatch(patchProductError(error));
         });
 };
