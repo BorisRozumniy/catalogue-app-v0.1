@@ -1,14 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { connect } from "react-redux";
 import { Col, Button, Form, FormGroup, Label, Input, FormText, Container } from 'reactstrap';
-import backendApiUrls from "../../routes/backendUrls";
-import { useHttp } from "../../hooks/http.hook";
-import { AuthContext } from '../../context/AuthContext';
-import { actionSetEditingProduct, actionPatchProduct } from '../../redux/actions/products';
+import {
+  actionPostCreateProduct,
+  actionPatchProduct
+} from '../../redux/actions/products';
 
 const ProductForm = ({
   editingProduct,
   toggleModal,
+  actionPostCreateProduct,
   actionPatchProduct,
 }) => {
   const {
@@ -18,8 +19,6 @@ const ProductForm = ({
     price,
     numberDaysUntilEndDiscount,
   } = editingProduct
-  const auth = useContext(AuthContext)
-  const { request } = useHttp()
   const [form, setForm] = useState({
     title,
     img,
@@ -36,20 +35,13 @@ const ProductForm = ({
     setForm({ ...form, [event.target.name]: event.target.value })
   }
   
-  const submitHandler = async e => {
+  const submitHandler = e => {
     e.preventDefault()
-    actionSetEditingProduct({})
     toggleModal()
     if (editingProduct._id) {
       actionPatchProduct(form)
     } else {
-      try {
-        await request(backendApiUrls.generate, 'POST', {...form}, {
-          Authorization: `Bearer ${auth.token}`
-        })
-      } catch (e) {
-        console.log('---', e)
-      }
+      actionPostCreateProduct(form)
     }
   };
   
@@ -150,5 +142,8 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { actionSetEditingProduct, actionPatchProduct }
+  {
+    actionPostCreateProduct,
+    actionPatchProduct
+  }
 )(ProductForm);

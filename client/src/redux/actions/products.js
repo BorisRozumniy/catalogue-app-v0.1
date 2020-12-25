@@ -74,6 +74,40 @@ export const actionGetProducts = () => (dispatch) => {
     });
 };
 
+const postCreateProductStart = (payload) => ({
+  type: types.POST_REQUEST_CREATE_PRODUCT_START,
+  payload,
+});
+
+const postCreateProductSuccess = (payload) => ({
+  type: types.POST_REQUEST_CREATE_PRODUCT_SUCCESS,
+  payload,
+});
+
+const postCreateProductError = (payload) => ({
+  type: types.POST_REQUEST_CREATE_PRODUCT_ERROR,
+  payload,
+});
+
+export const actionPostCreateProduct = (data) => (dispatch) => {
+  dispatch(postCreateProductStart());
+  const config = {
+    method: "POST",
+    url: backendApiUrls.generate,
+    data
+  };
+
+  axiosPlus(config)
+    .then((response) => {
+      const { data } = response;
+      dispatch(postCreateProductSuccess(data));
+    })
+
+    .catch((error) => {
+      dispatch(postCreateProductError(error));
+    });
+};
+
 export const actionDeleteProduct = (id) => (dispatch) => {
   dispatch(deleteProductStart());
   const config = {
