@@ -41,9 +41,7 @@ const ProductForm = ({
     actionSetEditingProduct({})
     toggleModal()
     if (editingProduct._id) {
-      actionPatchProduct(form, {
-        Authorization: `Bearer ${auth.token}`
-      })
+      actionPatchProduct(form)
     } else {
       try {
         await request(backendApiUrls.generate, 'POST', {...form}, {

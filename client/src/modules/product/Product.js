@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
-import { AuthContext } from '../../context/AuthContext';
 import { Col, Jumbotron, Button, Badge } from "reactstrap";
 import { actionDeleteProduct, actionPatchProduct, actionSetEditingProduct } from '../../redux/actions/products';
 
@@ -17,10 +16,9 @@ const Product = ({
     price,
     numberDaysUntilEndDiscount,
   } = product;
-  const auth = useContext(AuthContext)
 
   const deleteHandler = () => {
-    actionDeleteProduct(_id, {Authorization: `Bearer ${auth.token}`})
+    actionDeleteProduct(_id)
   }
   
   const editProductHandler = () => {
