@@ -32,21 +32,6 @@ const deleteProductError = (payload) => ({
   payload,
 });
 
-const patchProductStart = (payload) => ({
-  type: types.PATCH_REQUEST_PRODUCTS_START,
-  payload,
-});
-
-const patchProductSuccess = (payload) => ({
-  type: types.PATCH_REQUEST_PRODUCTS_SUCCESS,
-  payload,
-});
-
-const patchProductError = (payload) => ({
-  type: types.PATCH_REQUEST_PRODUCTS_ERROR,
-  payload,
-});
-
 export const actionSetEditingProduct = (payload) => ({
   type: types.SET_EDITING_PRODUCT,
   payload,
@@ -125,6 +110,22 @@ export const actionDeleteProduct = (id) => (dispatch) => {
       dispatch(deleteProductError(error));
     });
 };
+
+
+const patchProductStart = (payload) => ({
+  type: types.PATCH_REQUEST_UPDATE_PRODUCT_START,
+  payload,
+});
+
+const patchProductSuccess = (payload) => ({
+  type: types.PATCH_REQUEST_UPDATE_PRODUCT_SUCCESS,
+  payload,
+});
+
+const patchProductError = (payload) => ({
+  type: types.PATCH_REQUEST_UPDATE_PRODUCT_ERROR,
+  payload,
+});
 
 export const actionPatchProduct = (data) => (dispatch) => {
   dispatch(patchProductStart());

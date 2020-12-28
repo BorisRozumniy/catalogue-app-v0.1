@@ -69,9 +69,10 @@ router.delete('/:id', auth, async (req, res) => {
 
 router.patch('/:id', auth, async (req, res) => {
   try {
-    const editedProduct = await Product.findByIdAndUpdate(req.params.id, req.body)
+    await Product.findByIdAndUpdate(req.params.id, req.body)
     res.json({
-      message: `Продукт ${editedProduct.title} успешно изменен`,
+      editedProduct: req.body,
+      message: `Продукт ${req.body.title} успешно изменен`,
     })
   } catch (e) {
     res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова'})
