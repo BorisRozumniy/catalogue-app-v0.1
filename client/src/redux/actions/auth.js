@@ -1,7 +1,26 @@
-import axios from "axios";
+import axiosPlus from "../../helpers/axiosPlus";
 import backendApiUrls from "../../routes/backendUrls";
 import * as types from "../constants";
 const storageName = 'userData'
+
+export const actionPostRegistration = (data) => dispatch => {
+    dispatch(postRegistrationStart());
+    const config = {
+        method: "POST",
+        url: backendApiUrls.register,
+        data,
+    };
+
+    axiosPlus(config)
+        .then(response => {
+            const { data } = response;
+            dispatch(postRegistrationSuccess(data));
+        })
+
+        .catch((error) => {
+            dispatch(postRegistrationError(error));
+        });
+};
 
 const postRegistrationStart = payload => ({
     type: types.POST_REQUEST_REGISTRATION_START,
@@ -18,22 +37,27 @@ const postRegistrationError = payload => ({
     payload,
 });
 
-export const actionPostRegistration = (params) => dispatch => {
-    dispatch(postRegistrationStart());
+
+export const actionPostLogin = (data) => dispatch => {
+    dispatch(postLoginStart());
+    const { email } = data;
     const config = {
-        params,
         method: "POST",
-        url: backendApiUrls.url,
+        url: backendApiUrls.login,
+        data,
     };
 
-    axios(config)
+    axiosPlus(config)
         .then(response => {
-            const { data } = response;
-            dispatch(postRegistrationSuccess(data));
+            const { userId, token } = response.data;
+            dispatch(postLoginSuccess({ email }));
+            localStorage.setItem(storageName, JSON.stringify({
+                userId, token, email,
+            }))
         })
 
         .catch((error) => {
-            dispatch(postRegistrationError(error));
+            dispatch(postLoginError(error));
         });
 };
 
@@ -52,31 +76,8 @@ const postLoginError = payload => ({
     payload,
 });
 
-export const actionPostLogin = (data) => dispatch => {
-    dispatch(postLoginStart());
-    const { email } = data;
-    const config = {
-        method: "POST",
-        url: backendApiUrls.login,
-        data,
-    };
-
-    axios(config)
-        .then(response => {
-            const { userId, token } = response.data;
-            dispatch(postLoginSuccess({ email }));
-            localStorage.setItem(storageName, JSON.stringify({
-                userId, token, email,
-            }))
-        })
-
-        .catch((error) => {
-            dispatch(postLoginError(error));
-        });
-};
 
 export const actionLogout = () => {
-    console.log('actionLogout')
     localStorage.removeItem(storageName);
 
     return {
