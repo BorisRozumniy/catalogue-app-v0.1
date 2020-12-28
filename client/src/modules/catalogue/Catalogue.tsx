@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
-import { Row, Container, Button } from 'reactstrap';
+import { Row, Container, Button, Spinner } from 'reactstrap';
 import { actionGetProducts, actionSetEditingProduct } from '../../redux/actions/products';
 
 import Product from "../product/Product";
@@ -9,6 +9,7 @@ import ProductModal from "../product/ProductModal";
 interface IProps {
     products: Array<IProduct>;
     editingProduct: IProduct;
+    isLoading: boolean;
     actionSetEditingProduct: any;
     actionGetProducts: any;
 };
@@ -26,12 +27,14 @@ interface RootState {
     productsReducer: {
         productsData: Array<IProduct>;
         editingProduct: IProduct;
+        productsRequestLoading: boolean;
     }
   }
 
 const Catalogue = ({
     products,
     editingProduct,
+    isLoading,
     actionSetEditingProduct,
     actionGetProducts,
 }: IProps) => {
@@ -39,8 +42,7 @@ const Catalogue = ({
 
     useEffect(() => {
         !isProductsExist && actionGetProducts();
-    }, [isProductsExist, actionGetProducts]);
-
+    }, []);
 
     const [modal, setModal] = useState(false);
 
@@ -61,6 +63,13 @@ const Catalogue = ({
                 {isProductsExist && products.map(product =>
                     <Product key={product._id} product={product} />
                 )}
+                {isLoading &&
+                    <div
+                        className="d-flex justify-content-center w-100"
+                    >
+                        <Spinner color="primary" />
+                    </div>
+                }
             </Row>
         </Container>
     );
@@ -69,6 +78,7 @@ const Catalogue = ({
 
 const mapStateToProps = (state: RootState) => ({
     products: state.productsReducer.productsData,
+    isLoading: state.productsReducer.productsRequestLoading,
     editingProduct: state.productsReducer?.editingProduct,
 });
 
