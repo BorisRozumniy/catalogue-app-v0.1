@@ -2,44 +2,6 @@ import axiosPlus from "../../helpers/axiosPlus";
 import backendApiUrls from "../../routes/backendUrls";
 import * as types from "../constants";
 
-const getProductsStart = (payload) => ({
-  type: types.GET_REQUEST_PRODUCTS_START,
-  payload,
-});
-
-const getProductsSuccess = (payload) => ({
-  type: types.GET_REQUEST_PRODUCTS_SUCCESS,
-  payload,
-});
-
-const getProductsError = (payload) => ({
-  type: types.GET_REQUEST_PRODUCTS_ERROR,
-  payload,
-});
-
-const deleteProductStart = (payload) => ({
-  type: types.DELETE_REQUEST_PRODUCTS_START,
-  payload,
-});
-
-const deleteProductSuccess = (payload) => ({
-  type: types.DELETE_REQUEST_PRODUCTS_SUCCESS,
-  payload,
-});
-
-const deleteProductError = (payload) => ({
-  type: types.DELETE_REQUEST_PRODUCTS_ERROR,
-  payload,
-});
-
-export const actionSetEditingProduct = (payload) => ({
-  type: types.SET_EDITING_PRODUCT,
-  payload,
-});
-
-export const actionClearProducts = () => ({
-  type: types.CLEAR_PRODUCTS,
-});
 
 export const actionGetProducts = () => (dispatch) => {
   dispatch(getProductsStart());
@@ -59,20 +21,20 @@ export const actionGetProducts = () => (dispatch) => {
     });
 };
 
-const postCreateProductStart = (payload) => ({
-  type: types.POST_REQUEST_CREATE_PRODUCT_START,
+const getProductsStart = () => ({
+  type: types.GET_REQUEST_PRODUCTS_START,
+});
+
+const getProductsSuccess = (payload) => ({
+  type: types.GET_REQUEST_PRODUCTS_SUCCESS,
   payload,
 });
 
-const postCreateProductSuccess = (payload) => ({
-  type: types.POST_REQUEST_CREATE_PRODUCT_SUCCESS,
+const getProductsError = (payload) => ({
+  type: types.GET_REQUEST_PRODUCTS_ERROR,
   payload,
 });
 
-const postCreateProductError = (payload) => ({
-  type: types.POST_REQUEST_CREATE_PRODUCT_ERROR,
-  payload,
-});
 
 export const actionPostCreateProduct = (data) => (dispatch) => {
   dispatch(postCreateProductStart());
@@ -93,6 +55,21 @@ export const actionPostCreateProduct = (data) => (dispatch) => {
     });
 };
 
+const postCreateProductStart = () => ({
+  type: types.POST_REQUEST_CREATE_PRODUCT_START,
+});
+
+const postCreateProductSuccess = (payload) => ({
+  type: types.POST_REQUEST_CREATE_PRODUCT_SUCCESS,
+  payload,
+});
+
+const postCreateProductError = (payload) => ({
+  type: types.POST_REQUEST_CREATE_PRODUCT_ERROR,
+  payload,
+});
+
+
 export const actionDeleteProduct = (id) => (dispatch) => {
   dispatch(deleteProductStart());
   const config = {
@@ -111,21 +88,20 @@ export const actionDeleteProduct = (id) => (dispatch) => {
     });
 };
 
+const deleteProductStart = () => ({
+  type: types.DELETE_REQUEST_REMOVE_PRODUCT_START,
+});
 
-const patchProductStart = (payload) => ({
-  type: types.PATCH_REQUEST_UPDATE_PRODUCT_START,
+const deleteProductSuccess = (payload) => ({
+  type: types.DELETE_REQUEST_REMOVE_PRODUCT_SUCCESS,
   payload,
 });
 
-const patchProductSuccess = (payload) => ({
-  type: types.PATCH_REQUEST_UPDATE_PRODUCT_SUCCESS,
+const deleteProductError = (payload) => ({
+  type: types.DELETE_REQUEST_REMOVE_PRODUCT_ERROR,
   payload,
 });
 
-const patchProductError = (payload) => ({
-  type: types.PATCH_REQUEST_UPDATE_PRODUCT_ERROR,
-  payload,
-});
 
 export const actionPatchProduct = (data) => (dispatch) => {
   dispatch(patchProductStart());
@@ -145,3 +121,27 @@ export const actionPatchProduct = (data) => (dispatch) => {
       dispatch(patchProductError(error));
     });
 };
+
+const patchProductStart = () => ({
+  type: types.PATCH_REQUEST_UPDATE_PRODUCT_START,
+});
+
+const patchProductSuccess = (payload) => ({
+  type: types.PATCH_REQUEST_UPDATE_PRODUCT_SUCCESS,
+  payload,
+});
+
+const patchProductError = (payload) => ({
+  type: types.PATCH_REQUEST_UPDATE_PRODUCT_ERROR,
+  payload,
+});
+
+
+export const actionSetEditingProduct = (payload) => ({
+  type: types.SET_EDITING_PRODUCT,
+  payload,
+});
+
+export const actionClearProducts = () => ({
+  type: types.CLEAR_PRODUCTS,
+});

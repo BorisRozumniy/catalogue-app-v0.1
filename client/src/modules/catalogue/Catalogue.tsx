@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
-import { Row, Container, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-// import backendApiUrls from "../../routes/backendUrls";
-// import { useHttp } from "../../hooks/http.hook";
-import { AuthContext } from '../../context/AuthContext';
+import { Row, Container, Button } from 'reactstrap';
 import { actionGetProducts, actionSetEditingProduct } from '../../redux/actions/products';
 
 import Product from "../product/Product";
@@ -38,12 +35,12 @@ const Catalogue = ({
     actionSetEditingProduct,
     actionGetProducts,
 }: IProps) => {
-    const auth = useContext(AuthContext)
-    const isProductsExists = products.length > 0;
+    const isProductsExist = products.length > 0;
+
     useEffect(() => {
-        !isProductsExists && actionGetProducts();
-        
-    }, [isProductsExists]);
+        !isProductsExist && actionGetProducts();
+    }, [isProductsExist, actionGetProducts]);
+
 
     const [modal, setModal] = useState(false);
 
@@ -61,7 +58,7 @@ const Catalogue = ({
             <Button color="danger" onClick={toggleModal} className="mb-2">Add Product</Button>
             <ProductModal isOpen={modal} toggleModal={toggleModal} />
             <Row>
-                {isProductsExists && products.map(product =>
+                {isProductsExist && products.map(product =>
                     <Product key={product._id} product={product} />
                 )}
             </Row>
