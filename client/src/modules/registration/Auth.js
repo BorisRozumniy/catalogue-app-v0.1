@@ -1,67 +1,71 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { ToastContainer, toast } from 'react-toastify';
-import { actionPostRegistration, actionPostLogin } from "../../redux/actions/auth";
-
-import { Row, Col, Input, Label, Button } from "reactstrap";
-
-const Auth = ({
+import { ToastContainer, toast } from "react-toastify";
+import {
   actionPostRegistration,
   actionPostLogin,
-}) => {
+} from "../../redux/actions/auth";
+
+import { Row, Col } from "reactstrap";
+import TextField from "@material-ui/core/TextField";
+import { Button } from "@material-ui/core";
+
+
+const Auth = ({ actionPostRegistration, actionPostLogin }) => {
   const [form, setForm] = useState({
-    email: '', password: ''
+    email: "",
+    password: "",
   });
 
-  const changeHandler = event => {
-    setForm({ ...form, [event.target.name]: event.target.value })
-  }
-  
+  const changeHandler = (event) => {
+    setForm({ ...form, [event.target.name]: event.target.value });
+  };
+
   const registerHandler = () => {
-    actionPostRegistration(form)
+    actionPostRegistration(form);
   };
 
   const loginHandler = () => {
-    actionPostLogin(form)
+    actionPostLogin(form);
   };
 
   return (
     <Row className="justify-content-center">
       <Col xs={6}>
-        <h1 className="text-center">Auth</h1>
+        <h1 className="text-center mb-3 mt-5">Sign in/Sign Up</h1>
         <ToastContainer />
-        <Label className="w-100 text-uppercase">
-          email
-          <Input
-            name="email"
-            type="text"
-            onChange={changeHandler}
-          />
-        </Label>
-        <Label className="w-100 text-uppercase">
-          password
-          <Input
-            name="password"
-            type="password"
-            onChange={changeHandler}
-          />
-        </Label>
+        <TextField
+          name="email"
+          type="email"
+          onChange={changeHandler}
+          label="email"
+          variant="outlined"
+          style={{ marginBottom: 18 }}
+          fullWidth
+        />
+        <TextField
+          name="password"
+          type="password"
+          onChange={changeHandler}
+          label="password"
+          variant="outlined"
+          style={{ marginBottom: 18 }}
+          fullWidth
+        />
         <Row>
-          <Col sm={4}>
+          <Col sm={8}>
             <Button
-              color="info"
-              outline
-              type="submit"
               className="w-100 text-uppercase"
+              variant="outlined" color="primary"
+              type="submit"
               onClick={loginHandler}
             >
               Login
             </Button>
           </Col>
-          <Col sm={8}>
+          <Col sm={4}>
             <Button
-              color="warning"
-              type="submit"
+              variant="contained" color="primary" component="span"
               className="w-100 text-uppercase"
               onClick={registerHandler}
             >
@@ -74,8 +78,4 @@ const Auth = ({
   );
 };
 
-
-export default connect(
-  null,
-  { actionPostRegistration, actionPostLogin }
-)(Auth);
+export default connect(null, { actionPostRegistration, actionPostLogin })(Auth);
