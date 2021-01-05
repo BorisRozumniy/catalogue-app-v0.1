@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import {
@@ -10,11 +10,19 @@ import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 
 
-const Auth = ({ actionPostRegistration, actionPostLogin }) => {
+const Auth = ({
+  errorMessage,
+  actionPostRegistration,
+  actionPostLogin,
+}) => {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    errorMessage && toast.error(errorMessage);
+  }, [errorMessage]);
 
   const changeHandler = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value });
@@ -77,4 +85,11 @@ const Auth = ({ actionPostRegistration, actionPostLogin }) => {
   );
 };
 
-export default connect(null, { actionPostRegistration, actionPostLogin })(Auth);
+const mapStateToProps = (state) => ({
+  errorMessage: state.userReducer.userRequestError.message,
+});
+
+export default connect(mapStateToProps, {
+  actionPostRegistration,
+  actionPostLogin,
+})(Auth);
