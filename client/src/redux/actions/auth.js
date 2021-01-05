@@ -1,4 +1,5 @@
 import axiosPlus from "../../helpers/axiosPlus";
+import parseError from "../../helpers/parseError";
 import backendApiUrls from "../../routes/backendUrls";
 import * as types from "../constants";
 const storageName = 'userData'
@@ -57,7 +58,7 @@ export const actionPostLogin = (data) => dispatch => {
         })
 
         .catch((error) => {
-            dispatch(postLoginError(error));
+            dispatch(postLoginError(parseError(error)));
         });
 };
 

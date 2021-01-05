@@ -11,7 +11,7 @@ import { Button } from "@material-ui/core";
 
 
 const Auth = ({
-  errorMessage,
+  error,
   actionPostRegistration,
   actionPostLogin,
 }) => {
@@ -21,8 +21,9 @@ const Auth = ({
   });
 
   useEffect(() => {
-    errorMessage && toast.error(errorMessage);
-  }, [errorMessage]);
+    error.errors && toast.error(error.errors[0].msg);
+    error.message && toast.error(error.message);
+  }, [error]);
 
   const changeHandler = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value });
@@ -86,7 +87,7 @@ const Auth = ({
 };
 
 const mapStateToProps = (state) => ({
-  errorMessage: state.userReducer.userRequestError.message,
+  error: state.userReducer.userRequestError,
 });
 
 export default connect(mapStateToProps, {
