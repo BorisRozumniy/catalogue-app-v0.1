@@ -45,20 +45,24 @@ const Auth = ({
         <TextField
           name="email"
           type="email"
-          onChange={changeHandler}
           label="email"
           variant="outlined"
+          error={error.errors && error.errors[0].param === "email"}
+          helperText={error.errors && error.errors[0].msg}
           style={{ marginBottom: 18 }}
           fullWidth
+          onChange={changeHandler}
         />
         <TextField
           name="password"
           type="password"
-          onChange={changeHandler}
-          label="password"
           variant="outlined"
+          label="password"
+          error={error.errors && error.errors[0].param === "password"}
+          helperText={error.errors && error.errors[0].msg}
           style={{ marginBottom: 18 }}
           fullWidth
+          onChange={changeHandler}
         />
         <Row>
           <Col sm={8}>

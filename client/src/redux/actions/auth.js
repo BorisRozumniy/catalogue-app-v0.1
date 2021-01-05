@@ -19,7 +19,7 @@ export const actionPostRegistration = (data) => dispatch => {
         })
 
         .catch((error) => {
-            dispatch(postRegistrationError(error));
+            dispatch(postRegistrationError(parseError(error)));
         });
 };
 
