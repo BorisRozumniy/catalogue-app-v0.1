@@ -12,6 +12,7 @@
     "dev": "concurrently \"yarn run server\" \"yarn run client\""
   },
   "dependencies": {
+    "@material-ui/icons": "^4.11.2",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.3",
     "express": "^4.17.1",

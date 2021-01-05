@@ -1,5 +1,5 @@
 export const frontendUrls = {
-    home: "/",
+    home: "/home/",
     catalogue: "/catalogue/",
     registration: "/registration/",
 };

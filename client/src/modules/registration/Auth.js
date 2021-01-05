@@ -5,7 +5,6 @@ import {
   actionPostRegistration,
   actionPostLogin,
 } from "../../redux/actions/auth";
-
 import { Row, Col } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
