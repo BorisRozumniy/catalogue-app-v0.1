@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import {Switch, Route, Redirect} from 'react-router-dom'
 import Container from '@material-ui/core/Container';
 import { frontendUrls } from "../routes/frontendUrls";
-import Auth from '../modules/registration/Auth'
+import Auth from '../modules/registration/Login'
+import Registration from '../modules/registration/Registration'
 import Catalogue from "../modules/catalogue/Catalogue";
-import Registration from "../modules/registration/Auth";
 import Header from "../modules/header/Header";
 import EditProduct from "../modules/product/EditProduct";
 
@@ -15,27 +15,21 @@ const Routes = ({ email }) => (
       <>
         <Header />
         <Switch>
-          <Route path={frontendUrls.catalogue}>
-            <Catalogue />
-          </Route>
-          <Route path={frontendUrls.registration}>
-            <Registration />
-          </Route>
-          <Route path={frontendUrls.editProduct}>
-            <EditProduct />
-          </Route>
+          <Route path={frontendUrls.catalogue} component={Catalogue}/>
+          <Route path={frontendUrls.registration} component={Registration}/>
+          <Route path={frontendUrls.editProduct} component={EditProduct}/>
           <Route path={frontendUrls.home}>
             <h1>Welcome to our store</h1>
           </Route>
+          <Redirect to={frontendUrls.home} />
         </Switch>
       </>
     )}
     {!email && (
       <Switch>
-        <Route path="/" exact>
-          <Auth />
-        </Route>
-        <Redirect to="/" />
+        <Route path={frontendUrls.login} exact component={Auth}/>
+        <Route path={frontendUrls.registration} component={Registration} />
+        <Redirect to={frontendUrls.login} />
       </Switch>
     )}
   </Container>
