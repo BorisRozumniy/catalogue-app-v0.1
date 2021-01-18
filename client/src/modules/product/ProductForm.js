@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { useForm } from "react-hook-form";
-import {
-  FormGroup,
-  TextField,
-  FormHelperText,
-  Button,
-  FormControl,
-} from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
+import Input from "../components/Input";
 import {
   actionPostCreateProduct,
   actionPatchProduct,
@@ -20,132 +15,62 @@ const ProductForm = ({
   actionPostCreateProduct,
   actionPatchProduct,
 }) => {
-  const {
-    title,
-    img,
-    description,
-    price,
-    numberDaysUntilEndDiscount,
-  } = editingProduct;
-  const [form, setForm] = useState({
-    title,
-    img,
-    description,
-    price,
-    numberDaysUntilEndDiscount,
-  });
-
   const { register, handleSubmit, errors } = useForm();
 
-  useEffect(() => {
-    title && setForm(editingProduct);
-  }, [editingProduct]);
-
-  const changeHandler = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.value });
-  };
-
-  const submitHandler = (e) => {
-    e.preventDefault();
+  const onSubmit = (data) => {
     toggleModal();
     if (editingProduct._id) {
-      actionPatchProduct(form);
+      actionPatchProduct({ ...data, _id: editingProduct._id });
     } else {
-      actionPostCreateProduct(form);
+      actionPostCreateProduct(data);
     }
   };
-
   return (
-    <FormControl onSubmit={submitHandler}>
-      <FormGroup row>
-        <TextField
-          name="title"
-          type="title"
-          label="title"
-          variant="outlined"
-          // error={error.errors && error.errors[0].param === "email"}
-          // helperText={error.errors && error.errors[0].msg}
-          fullWidth
-          value={form.title}
-          onChange={changeHandler}
-          // inputRef={}
-        />
-        <FormHelperText style={{ marginBottom: 12 }}>
-          Заголовок (обязательное поле, минимум 20, максимум 60 символов);
-        </FormHelperText>
-      </FormGroup>
-      <FormGroup row>
-        <TextField
-          type="file"
-          name="img"
-          label="img"
-          value={form.img}
-          onChange={changeHandler}
-          invalid
-        />
-        <FormHelperText style={{ marginBottom: 12 }} color="muted">
-          Фото (обязательное поле, минимальные ширина/высота = 200px,
-          максимальные 4000px).
-        </FormHelperText>
-      </FormGroup>
-      <FormGroup row>
-        <TextField
-          name="description"
-          type="text"
-          label="description"
-          variant="outlined"
-          // error={error.errors && error.errors[0].param === "email"}
-          // helperText={error.errors && error.errors[0].msg}
-          fullWidth
-          value={form.description}
-          onChange={changeHandler}
-          // inputRef={}
-        />
-        <FormHelperText style={{ marginBottom: 12 }} color="muted">
-          Описание товара (не обязательное поле, максимум 200 символов);
-        </FormHelperText>
-      </FormGroup>
-      <FormGroup row>
-        <TextField
-          name="price"
-          type="number"
-          label="price"
-          variant="outlined"
-          // error={error.errors && error.errors[0].param === "email"}
-          // helperText={error.errors && error.errors[0].msg}
-          value={form.price}
-          onChange={changeHandler}
-          style={{ width: "25%" }}
-          // inputRef={}
-        />
-        <FormHelperText style={{ marginBottom: 12 }} color="muted">
-          Цена (обязательное поле, положительное число, максимальное значение
-          99999999.99$).
-        </FormHelperText>
-      </FormGroup>
-      <FormGroup row>
-        <TextField
-          name="numberDaysUntilEndDiscount"
-          type="number"
-          label="numberDaysUntilEndDiscount"
-          variant="outlined"
-          // error={error.errors && error.errors[0].param === "email"}
-          // helperText={error.errors && error.errors[0].msg}
-          value={form.numberDaysUntilEndDiscount}
-          onChange={changeHandler}
-          style={{ width: "25%" }}
-          // inputRef={}
-        />
-        <FormHelperText style={{ marginBottom: 12 }} color="muted">
-          Дней до завершения акции
-        </FormHelperText>
-      </FormGroup>
-      <FormGroup row>
-        <Button variant="contained" color="primary" startIcon={<SaveIcon />}>
-          Submit
-        </Button>
-      </FormGroup>
-    </FormControl>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Input
+        ref={register({ required: "This is required." })}
+        id="title"
+        type="text"
+        label="title"
+        name="title"
+        error={!!errors.title}
+        helperText={errors?.title?.message}
+        defaultValue={editingProduct.title}
+      />
+      <Input
+        ref={register}
+        id="description"
+        type="text"
+        label="description"
+        name="description"
+        error={!!errors.description}
+        helperText={errors?.description?.message}
+        defaultValue={editingProduct.description}
+      />
+      <Input
+        ref={register({ required: "This is required.", valueAsNumber: true })}
+        id="price"
+        type="number"
+        label="price"
+        name="price"
+        error={!!errors.price}
+        helperText={errors?.price?.message}
+        defaultValue={editingProduct.price}
+      />
+      <Input
+        ref={register}
+        id="numberDaysUntilEndDiscount"
+        type="number"
+        label="numberDaysUntilEndDiscount"
+        name="numberDaysUntilEndDiscount"
+        error={!!errors.numberDaysUntilEndDiscount}
+        helperText={errors?.numberDaysUntilEndDiscount?.message}
+        defaultValue={editingProduct.numberDaysUntilEndDiscount}
+      />
+      <Button startIcon={<SaveIcon />} color="primary" type="submit">
+        Save
+      </Button>
+    </form>
   );
 };
 
