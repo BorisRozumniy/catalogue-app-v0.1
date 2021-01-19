@@ -6,6 +6,8 @@ import { actionGetProducts, actionSetEditingProduct } from '../../redux/actions/
 import { MainContainer } from "../components/MainContainer";
 import Product from "../product/Product";
 import ProductModal from "../product/ProductModal";
+import CatalogueTable from "./CatalogueTable";
+import { IProduct, RootState } from "../../types"
 
 interface IProps {
   products: Array<IProduct>;
@@ -14,23 +16,6 @@ interface IProps {
   actionSetEditingProduct: any;
   actionGetProducts: any;
 };
-
-interface IProduct {
-  _id: string
-  img: string,
-  title: string,
-  description: string,
-  price: string,
-  numberDaysUntilEndDiscount: number,
-};
-
-interface RootState {
-  productsReducer: {
-    productsData: Array<IProduct>;
-    editingProduct: IProduct;
-    productsRequestLoading: boolean;
-  }
-}
 
 const Catalogue = ({
   products,
@@ -60,6 +45,7 @@ const Catalogue = ({
       <h1>Catalogue</h1>
       <Button color="danger" onClick={toggleModal} className="mb-2">Add Product</Button>
       <ProductModal isOpen={modal} toggleModal={toggleModal} />
+      <CatalogueTable products={products} />
       <Row>
         {isProductsExist && products.map(product =>
           <Product key={product._id} product={product} />
