@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import { Button } from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { actionPostLogin } from "../../redux/actions/auth";
 import { frontendUrls } from "../../routes/frontendUrls";
 import Input from "../components/Input";
 import { MainContainer } from "../components/MainContainer";
+import { PrimaryButton as Button } from "../components/Button";
 
 const Login = ({ error, actionPostLogin }) => {
   useEffect(() => {
@@ -47,14 +47,11 @@ const Login = ({ error, actionPostLogin }) => {
           error={!!errors.password}
           helperText={errors?.password?.message}
         />
-        <Button
-          className="w-100 text-uppercase"
-          variant="outlined"
-          color="primary"
-          type="submit"
-        >
-          Login
-        </Button>
+        <div className="px-5">
+          <Button fullWidth type="submit">
+            Login
+          </Button>
+        </div>
         <Link to={frontendUrls.registration}>Create Account</Link>
       </form>
     </MainContainer>
