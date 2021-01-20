@@ -4,8 +4,13 @@ import update from 'immutability-helper'
 
 const style = {
   width: 400,
+  border: "1px solid",
+  padding: 15,
 }
 
+interface IProps {
+  items: Array<Item>;
+}
 export interface Item {
   id: number
   text: string
@@ -15,39 +20,15 @@ export interface ContainerState {
   cards: Item[]
 }
 
-export const Container: React.FC = () => {
+// interface GenericsExampleProps<T> {
+//   children: (item: T) => React.ReactNode
+//   items: Array<T>
+// }
+
+// export function Container<T>({ items, children }: GenericsExampleProps<T>) {
+export function Container({ items }: IProps) {
   {
-    const [cards, setCards] = useState([
-      {
-        id: 1,
-        text: 'Write a cool JS library',
-      },
-      {
-        id: 2,
-        text: 'Make it generic enough',
-      },
-      {
-        id: 3,
-        text: 'Write README',
-      },
-      {
-        id: 4,
-        text: 'Create some examples',
-      },
-      {
-        id: 5,
-        text:
-          'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
-      },
-      {
-        id: 6,
-        text: '???',
-      },
-      {
-        id: 7,
-        text: 'PROFIT',
-      },
-    ])
+    const [cards, setCards] = useState(items)
 
     const moveCard = useCallback(
       (dragIndex: number, hoverIndex: number) => {
@@ -64,22 +45,22 @@ export const Container: React.FC = () => {
       [cards],
     )
 
-    const renderCard = (card: { id: number; text: string }, index: number) => {
-      return (
-        <Card
-          key={card.id}
-          index={index}
-          id={card.id}
-          text={card.text}
-          moveCard={moveCard}
-        />
-      )
-    }
-
     return (
       <>
-        <div style={style}>{cards.map((card, i) => renderCard(card, i))}</div>
+        {items && <div style={style}>{cards.map((card, i) => renderCard(card, i, moveCard))}</div>}
       </>
     )
   }
+}
+
+const renderCard = (card: { id: number; text?: string }, index: number, moveCard: (dragIndex: number, hoverIndex: number) => void) => {
+  return (
+    <Card
+      key={card.id}
+      index={index}
+      id={card.id}
+      // text={card.text || ''}
+      moveCard={moveCard}
+    >{card.text}</Card>
+  )
 }

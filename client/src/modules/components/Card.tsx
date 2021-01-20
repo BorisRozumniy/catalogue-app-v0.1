@@ -13,7 +13,7 @@ const style = {
 
 export interface CardProps {
   id: any
-  text: string
+  text?: string
   index: number
   moveCard: (dragIndex: number, hoverIndex: number) => void
 }
@@ -23,7 +23,7 @@ interface DragItem {
   id: string
   type: string
 }
-export const Card: React.FC<CardProps> = ({ id, text, index, moveCard }) => {
+export const Card: React.FC<CardProps> = ({ id, text, index, moveCard, children }) => {
   const ref = useRef<HTMLDivElement>(null)
   const [, drop] = useDrop({
     accept: ItemTypes.CARD,
@@ -88,7 +88,7 @@ export const Card: React.FC<CardProps> = ({ id, text, index, moveCard }) => {
   drag(drop(ref))
   return (
     <div ref={ref} style={{ ...style, opacity }}>
-      {text}
+      {children}
     </div>
   )
 }
