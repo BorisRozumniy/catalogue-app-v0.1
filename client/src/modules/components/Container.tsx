@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Card } from './Card'
 import update from 'immutability-helper'
 
@@ -6,14 +6,17 @@ const style = {
   width: 400,
   border: "1px solid",
   padding: 15,
+  background: "yellow",
+  borderRadius: 5
 }
 
 interface IProps {
   items: Array<Item>;
 }
 export interface Item {
-  id: number
+  _id: string
   text: string
+  title: string
 }
 
 export interface ContainerState {
@@ -29,6 +32,13 @@ export interface ContainerState {
 export function Container({ items }: IProps) {
   {
     const [cards, setCards] = useState(items)
+    useEffect(() => {
+      setCards(items)
+    }, [items])
+
+    useEffect(() => {
+      console.log(cards)
+    }, [cards])
 
     const moveCard = useCallback(
       (dragIndex: number, hoverIndex: number) => {
@@ -44,7 +54,6 @@ export function Container({ items }: IProps) {
       },
       [cards],
     )
-
     return (
       <>
         {items && <div style={style}>{cards.map((card, i) => renderCard(card, i, moveCard))}</div>}
@@ -53,14 +62,14 @@ export function Container({ items }: IProps) {
   }
 }
 
-const renderCard = (card: { id: number; text?: string }, index: number, moveCard: (dragIndex: number, hoverIndex: number) => void) => {
+const renderCard = (card: { _id: string; title: string }, index: number, moveCard: (dragIndex: number, hoverIndex: number) => void) => {
   return (
     <Card
-      key={card.id}
+      key={card._id}
       index={index}
-      id={card.id}
+      id={card._id}
       // text={card.text || ''}
       moveCard={moveCard}
-    >{card.text}</Card>
+    >{card.title}</Card>
   )
 }

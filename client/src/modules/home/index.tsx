@@ -47,7 +47,7 @@ interface IProps {
 const Home = ({ email }: IProps) => (
   <MainContainer>
     <h1>Hello <span style={{ color: "#ec5" }}>{email}</span>!!!</h1>
-    <DND items={items}/>
+    {/* <DND items={items}/> */}
   </MainContainer>
 );
 

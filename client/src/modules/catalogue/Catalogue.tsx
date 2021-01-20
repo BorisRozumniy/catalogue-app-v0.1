@@ -8,6 +8,8 @@ import Product from "../product/Product";
 import ProductModal from "../product/ProductModal";
 import CatalogueTable from "./CatalogueTable";
 import { IProduct, RootState } from "../../types"
+import DND from "../components/DND";
+
 
 interface IProps {
   products: Array<IProduct>;
@@ -45,6 +47,7 @@ const Catalogue = ({
       <h1>Catalogue</h1>
       <Button color="danger" onClick={toggleModal} className="mb-2">Add Product</Button>
       <ProductModal isOpen={modal} toggleModal={toggleModal} />
+        <DND items={products}/>
       <CatalogueTable products={products} />
       <Row>
         {isProductsExist && products.map(product =>
