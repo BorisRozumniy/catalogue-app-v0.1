@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { MainContainer } from "../components/MainContainer";
+import DND from "../components/DND";
 
 interface RootState {
   userReducer: {
@@ -15,6 +16,7 @@ interface IProps {
 const Home = ({ email }: IProps) => (
   <MainContainer>
     <h1>Hello <span style={{ color: "#ec5" }}>{email}</span>!!!</h1>
+    <DND />
   </MainContainer>
 );
 

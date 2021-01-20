@@ -27,3 +27,8 @@ export const PATCH_REQUEST_UPDATE_PRODUCT_ERROR = "PATCH_REQUEST_UPDATE_PRODUCT_
 
 export const SET_EDITING_PRODUCT = "SET_EDITING_PRODUCT";
 export const CLEAR_PRODUCTS = "CLEAR_PRODUCTS";
+
+export const ItemTypes = {
+  CARD: "card",
+};
+  
