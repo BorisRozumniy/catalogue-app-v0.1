@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -8,6 +8,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import update from 'immutability-helper'
+import { Card } from '../components/Card'
 import { IProduct } from '../../types';
 
 interface IProps {
@@ -63,6 +67,26 @@ export default function StickyHeadTable({ products }: IProps) {
     setPage(0);
   };
 
+  const [cards, setCards] = useState(products)
+  useEffect(() => {
+    setCards(products)
+  }, [products])
+
+  const moveCard = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      const dragCard = cards[dragIndex]
+      setCards(
+        update(cards, {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, dragCard],
+          ],
+        }),
+      )
+    },
+    [cards],
+  )
+
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
@@ -81,20 +105,25 @@ export default function StickyHeadTable({ products }: IProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
-                  {columns.map((column) => {
-                    const value = row[column.name];
-                    return (
-                      <TableCell key={column.name} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
+            <DndProvider backend={HTML5Backend}>
+              {products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+                console.log(row)
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1}>
+                    <Card id={row._id} index={index} moveCard={moveCard}>
+                      {columns.map((column) => {
+                        const value = row[column.name];
+                        return (
+                          <TableCell key={column.name} align={column.align}>
+                            {column.format && typeof value === 'number' ? column.format(value) : value}
+                          </TableCell>
+                        );
+                      })}
+                    </Card >
+                  </TableRow>
+                );
+              })}
+            </DndProvider>
           </TableBody>
         </Table>
       </TableContainer>
